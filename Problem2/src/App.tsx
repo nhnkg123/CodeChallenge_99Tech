@@ -8,7 +8,7 @@ function App() {
   return (
     <>
     <ContentWrapper>
-      <CurrencySwap />
+      <CurrencySwap/>
     </ContentWrapper>
     </>
   )
