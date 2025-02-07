@@ -7,7 +7,7 @@ var sum_to_n_a = function(n) {
     return sum;
 };
 
-//resursion
+//resursion with time complexity O(n)
 var sum_to_n_b = function(n) {
     if (n <1) {
         return 0;
