@@ -1,11 +1,25 @@
 import { useEffect, useState } from 'react'
 import Select from './Select'
+import Input from './Input '
+import { FormProvider, useForm } from 'react-hook-form'
+import * as yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
 
 export type CurrencyType = {
   currency: string,
   date: string,
   price: number,
 }
+
+type AmountInputType = {
+  InputAmount: number
+}
+
+const schema = yup.object().shape({
+  InputAmount: yup.number()
+    .required("Input Amount is required")
+    .typeError("Input Amount must be a number")
+})
 
 const getListOfCurrency = (currencyList: Array<CurrencyType>) => {
   return currencyList.map((item) => item.currency)
@@ -22,6 +36,10 @@ const CurrencySwap = () => {
     currency: "",
     date: "",
     price: 0,
+  })
+
+  const methods = useForm<AmountInputType>({
+    resolver: yupResolver(schema),
   })
 
   const onChangeCurrencyFrom = (option: string) => {
@@ -50,42 +68,47 @@ const CurrencySwap = () => {
     }
   }
 
-  console.log("currency from: ", currencyFromSelected);
-  console.log("currency to: ", currencyToSelected); 
+  const handleGetInputValue = (data: AmountInputType) => {
+    console.log(data);
+  }
 
   return (
     <>
       <div>
         <div className="text-blue-500 mb-10 uppercase font-bold text-lg">Currency Swap</div>    
-        <form >
-          <div className='flex gap-2.5 mb-5'>
-            <h5>Swap</h5>
-            <div>From</div>
-              <Select options={getListOfCurrency(currencyList)} className="bg-amber-200" onSelect={onChangeCurrencyFrom}/>
-            <div>To</div>
-              <Select options={getListOfCurrency(currencyList)} className="bg-amber-200" onSelect={onChangeCurrencyTo}/>
-          </div>
-          
-          {/* <label htmlFor="input-amount">Amount to send</label>
-          <input id="input-amount" />
-          <label htmlFor="output-amount">Amount to receive</label>
-          <input id="output-amount" /> */}
-
-          
-          <div className="grid grid-cols-3 gap-5 items-center mb-5">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="input-amount">
-              Amount to send
-            </label>
-            <input className="col-span-2 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="input-amount" type="text" placeholder="Amount to send"/>
-          
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="output-amount">
-              Amount to receive
-            </label>          
-            <input className="bg-gray-300 col-span-2 shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="output-amount" type="password" placeholder="Amount to receive" disabled/>
-            <p className="text-red-500 text-xs italic col-end-4 col-span-2">Please choose a correct format.</p>
-          </div>
-          
-          <button className='bg-blue-400 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded'>CONFIRM SWAP</button>
+        <form onSubmit={methods.handleSubmit(handleGetInputValue)}>
+          <FormProvider {...methods}>
+            <div className='flex gap-2.5 mb-5'>
+              <h5>Swap</h5>
+              <div>From</div>
+                <Select options={getListOfCurrency(currencyList)} className="bg-amber-200" onSelect={onChangeCurrencyFrom}/>
+              <div>To</div>
+                <Select options={getListOfCurrency(currencyList)} className="bg-amber-200" onSelect={onChangeCurrencyTo}/>
+            </div>
+            
+            <div className="flex flex-col gap-5 items-center mb-5">
+              <Input 
+                id='input-amount'
+                name='InputAmount'
+                labelClassName="block text-gray-700 text-sm font-bold mb-2 w-50"
+                inputClassName="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                labelName='Amount to send'
+                placeholder='Amount to send'
+                type='text'
+              />
+              <Input 
+                id='output-amount'
+                name ='OutputAmount'
+                labelClassName="block text-gray-700 text-sm font-bold mb-2 w-50"
+                inputClassName="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-2"
+                labelName='Amount to receive'
+                placeholder='Amount to receive'
+                type='text'
+                disable= {true}
+              />
+            </div>
+            <button className='bg-blue-400 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded'>CONFIRM SWAP</button>
+          </FormProvider>
       </form>  
       </div>
       
