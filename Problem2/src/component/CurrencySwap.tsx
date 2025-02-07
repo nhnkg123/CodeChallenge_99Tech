@@ -84,10 +84,10 @@ const CurrencySwap = () => {
   return (
     <>
       <div>
-        <div className="text-blue-500 mb-10 uppercase font-bold text-lg">Currency Swap</div>    
+        <div className="text-blue-500 mb-10 uppercase font-bold text-2xl">Currency Swap</div>    
         <form onSubmit={methods.handleSubmit(handleGetInputValue)}>
           <FormProvider {...methods}>
-            <div className='flex gap-2.5 mb-7 items-center'>
+            <div className='flex gap-2.5 mb-7 items-center text-gray-600'>
               <h5>Swap</h5>
               <div>From</div>
                 <Select 
@@ -110,7 +110,7 @@ const CurrencySwap = () => {
                 id='input-amount'
                 name='InputAmount'
                 value = {inputAmount.toString()}
-                labelClassName="block text-gray-700 text-sm font-bold mb-2 w-50"
+                labelClassName="block text-gray-600 text-sm font-bold mb-2 w-50"
                 inputClassName="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 labelName='Amount to send'
                 placeholder='Amount to send'
@@ -120,7 +120,7 @@ const CurrencySwap = () => {
                 id='output-amount'
                 name ='OutputAmount'
                 value = {outputAmount.toFixed(5)}
-                labelClassName="block text-gray-700 text-sm font-bold mb-2 w-50"
+                labelClassName="block text-gray-600 text-sm font-bold mb-2 w-50"
                 inputClassName="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-2"
                 labelName='Amount to receive'
                 placeholder='Amount to receive'

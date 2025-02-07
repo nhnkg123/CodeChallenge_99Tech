@@ -21,6 +21,6 @@ var sum_to_n_c = function(n) {
 };
 
 
-console.log(sum_to_n_a(5)); // 15
+console.log(sum_to_n_a(5));
 console.log(sum_to_n_b(5));
 console.log(sum_to_n_c(5));
