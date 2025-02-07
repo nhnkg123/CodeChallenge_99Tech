@@ -1,4 +1,5 @@
 import { useFormContext } from 'react-hook-form'
+import { useState, useEffect } from 'react'
 
 type InputProps = {
   labelClassName: string,
@@ -13,9 +14,14 @@ type InputProps = {
   onChange?: (value:string) => void
 }
 
-const Input: React.FC<InputProps> = ({labelClassName, inputClassName, labelName, id, type, placeholder, disable = false, name}) => {
+const Input: React.FC<InputProps> = ({labelClassName, inputClassName, labelName, id, type, placeholder, disable = false, name, value}) => {
+  const [valueInput, setValueInput] = useState<string | undefined>('')
   const { register, formState: { errors } } = useFormContext()
-  const inputClassNameIfError = `${inputClassName} ${disable ? 'bg-gray-300 cursor-not-allowed' : ''} ${errors[name] ? 'border-red-500' : ''}`
+  const inputClassNameIfError = `${inputClassName} ${disable ? 'bg-gray-300 cursor-not-allowed' : ''} ${errors[name] ? 'border-red-500' : ''}`;
+
+  useEffect(() => {
+    setValueInput(value);
+  }, [value])
 
   return (
     <div className="grid grid-cols-3 items-center">
@@ -26,6 +32,8 @@ const Input: React.FC<InputProps> = ({labelClassName, inputClassName, labelName,
         {...register(name)}
         className={`${inputClassNameIfError} col-span-2 mb-2`} 
         id={id} 
+        value={valueInput}
+        onChange={(e) => setValueInput(e.target.value)}
         type={type} 
         placeholder={placeholder} 
         name={name}

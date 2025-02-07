@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import './App.css'
 import CurrencySwap from './component/CurrencySwap'
 import ContentWrapper from './component/ContentWrapper'

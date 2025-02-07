@@ -28,15 +28,24 @@ const getListOfCurrency = (currencyList: Array<CurrencyType>) => {
 const CurrencySwap = () => {
   const [ currencyList, setCurrencyList]=  useState<Array<CurrencyType>>([]);
   const [ currencyFromSelected, SetCurrencyFromSelected ] = useState<CurrencyType>({
-    currency: "",
-    date: "",
-    price: 0,
+    currency: "USD",
+    date: "2023-08-29T07:10:30.000Z",
+    price: 1,
   })
   const [ currencyToSelected, SetCurrencyToSelected ] = useState<CurrencyType>({
-    currency: "",
-    date: "",
-    price: 0,
+    currency: "USDC",
+    date: "2023-08-29T07:10:40.000Z",
+    price: 0.989832,
   })
+  
+  const [inputAmount, setInputAmount]= useState<number>(1);
+  const outputAmountDefault = (currencyToSelected.price / currencyFromSelected.price);
+  const [outputAmount, setOutputAmount] = useState<number>(outputAmountDefault);
+
+  useEffect(() => {
+    const outputAmountResult = (currencyToSelected.price / currencyFromSelected.price) * inputAmount;
+    setOutputAmount(outputAmountResult);
+  }, [inputAmount, currencyFromSelected, currencyToSelected])
 
   const methods = useForm<AmountInputType>({
     resolver: yupResolver(schema),
@@ -69,7 +78,7 @@ const CurrencySwap = () => {
   }
 
   const handleGetInputValue = (data: AmountInputType) => {
-    console.log(data);
+    setInputAmount(data.InputAmount);
   }
 
   return (
@@ -78,18 +87,29 @@ const CurrencySwap = () => {
         <div className="text-blue-500 mb-10 uppercase font-bold text-lg">Currency Swap</div>    
         <form onSubmit={methods.handleSubmit(handleGetInputValue)}>
           <FormProvider {...methods}>
-            <div className='flex gap-2.5 mb-5'>
+            <div className='flex gap-2.5 mb-7 items-center'>
               <h5>Swap</h5>
               <div>From</div>
-                <Select options={getListOfCurrency(currencyList)} className="bg-amber-200" onSelect={onChangeCurrencyFrom}/>
-              <div>To</div>
-                <Select options={getListOfCurrency(currencyList)} className="bg-amber-200" onSelect={onChangeCurrencyTo}/>
+                <Select 
+                  options={getListOfCurrency(currencyList)} 
+                  className="bg-blue-200" 
+                  onSelect={onChangeCurrencyFrom}
+                  selected = {currencyFromSelected.currency}
+                />
+              <div className='ms-5'>To</div>
+                <Select 
+                  options={getListOfCurrency(currencyList)} 
+                  className="bg-blue-200" 
+                  onSelect={onChangeCurrencyTo}
+                  selected = {currencyToSelected.currency}
+                />
             </div>
             
             <div className="flex flex-col gap-5 items-center mb-5">
               <Input 
                 id='input-amount'
                 name='InputAmount'
+                value = {inputAmount.toString()}
                 labelClassName="block text-gray-700 text-sm font-bold mb-2 w-50"
                 inputClassName="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 labelName='Amount to send'
@@ -99,6 +119,7 @@ const CurrencySwap = () => {
               <Input 
                 id='output-amount'
                 name ='OutputAmount'
+                value = {outputAmount.toFixed(5)}
                 labelClassName="block text-gray-700 text-sm font-bold mb-2 w-50"
                 inputClassName="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-2"
                 labelName='Amount to receive'
