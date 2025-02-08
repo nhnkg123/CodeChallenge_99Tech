@@ -40,7 +40,7 @@ const Select: React.FC<SelectProps> = ({options, className, onSelect, selected: 
         <div className="ms-7"><IoMdArrowDropdown /></div>
       </div>
       
-      {isOpenPopup ? (<div className={`${className} absolute top-11 left-0 p-3 w-35`} ref ={popupRef}>
+      {isOpenPopup ? (<div className={`${className} absolute top-11 left-0 p-3 w-35 overflow-y-auto h-60`} ref ={popupRef}>
         {options.map((option, index) => (
           <div 
             key={index} 
